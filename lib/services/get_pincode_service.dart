@@ -1,18 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bloc_demo/model/model.dart';
+import 'package:bloc_demo/model/pincode_model.dart';
 import 'package:http/http.dart' as http;
 
-Future<ModelClass> fetchList() async {
+Future<PincodeModel> getPincodes() async {
   try {
     final resp = await http.get(
       Uri.parse(
-          'http://demo.elanadudaily.ociuzerp.in/mobileApi/getfeaturedlist?Userid=135&CityID=1'),
+          'http://demo.elanadudaily.ociuzerp.in/mobileapi/getPincodes?CityID=1'),
     );
     final Map<String, dynamic> decoded = jsonDecode(resp.body);
     if (resp.statusCode == 200) {
-      final pokeResp = ModelClass.fromMap(decoded);
+      final pokeResp = PincodeModel.fromMap(decoded);
       return pokeResp;
     } else {
       throw Exception('Failed to load list');

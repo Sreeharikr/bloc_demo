@@ -2,7 +2,6 @@
 //
 //     final modelClass = modelClassFromMap(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 ModelClass modelClassFromMap(String str) =>
@@ -11,11 +10,11 @@ ModelClass modelClassFromMap(String str) =>
 String modelClassToMap(ModelClass data) => json.encode(data.toMap());
 
 class ModelClass {
+  final List<Result> result;
+
   ModelClass({
     required this.result,
   });
-
-  final List<Result> result;
 
   factory ModelClass.fromMap(Map<String, dynamic> json) => ModelClass(
         result: List<Result>.from(json["result"].map((x) => Result.fromMap(x))),
@@ -27,6 +26,24 @@ class ModelClass {
 }
 
 class Result {
+  final int productId;
+
+  final String productKey;
+  final String productName;
+  final String description;
+  final dynamic currency;
+  final String qty;
+  final double price;
+  final double actualPrice;
+  final String currencysymbol;
+  final int totalCount;
+  final String productImage;
+  final int catId;
+  final bool available;
+  final bool featured;
+  final double offer;
+  final bool inCart;
+  final String availabilityStatus;
   Result({
     required this.productId,
     required this.productKey,
@@ -46,24 +63,6 @@ class Result {
     required this.inCart,
     required this.availabilityStatus,
   });
-
-  final int productId;
-  final String productKey;
-  final String productName;
-  final String description;
-  final dynamic currency;
-  final String qty;
-  final double price;
-  final double actualPrice;
-  final String currencysymbol;
-  final int totalCount;
-  final String productImage;
-  final int catId;
-  final bool available;
-  final bool featured;
-  final double offer;
-  final bool inCart;
-  final String availabilityStatus;
 
   factory Result.fromMap(Map<String, dynamic> json) => Result(
         productId: json["ProductID"],

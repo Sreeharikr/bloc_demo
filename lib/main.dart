@@ -1,5 +1,6 @@
 import 'package:bloc_demo/bloc/bottom_nav_bar_bloc/bottom_nav_bar_bloc.dart';
 import 'package:bloc_demo/constants/app_styles.dart';
+import 'package:bloc_demo/constants/size_config.dart';
 import 'package:bloc_demo/cubit/countercubit_cubit.dart';
 import 'package:bloc_demo/pages/bloc_demo.dart';
 import 'package:bloc_demo/pages/form_demo.dart';
@@ -20,22 +21,28 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<CountercubitCubit>(
       create: (context) => CountercubitCubit(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.red,
-        ),
-        home: MultiBlocProvider(providers: [
-          BlocProvider(
-            create: (context) => BottomNavBarBloc()..add(ChangePageEvent(0)),
-          ),
-          BlocProvider(
-            create: (context) => DemoBloc()..add(BlocDemoEvent()),
-          )
-        ], child: const MyHomePage()),
-        //  home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      ),
+      child: LayoutBuilder(builder: (context, constraints) {
+        return OrientationBuilder(builder: (context, orientation) {
+          SizeConfig().init(constraints, orientation);
+          return MaterialApp(
+            title: 'Flutter Demo',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primarySwatch: Colors.red,
+            ),
+            home: MultiBlocProvider(providers: [
+              BlocProvider(
+                create: (context) =>
+                    BottomNavBarBloc()..add(ChangePageEvent(0)),
+              ),
+              BlocProvider(
+                create: (context) => DemoBloc()..add(BlocDemoEvent()),
+              )
+            ], child: const MyHomePage()),
+            //  home: const MyHomePage(title: 'Flutter Demo Home Page'),
+          );
+        });
+      }),
     );
   }
 }
@@ -53,8 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> tabPage = [
     const MyWidget(title: "title"),
     const FormDemoPage(),
-    const NavDemo1(),
-    const NavDemo2()
+    const AnimationDemo(),
+    const GridViewDemo()
   ];
 
   @override
@@ -65,11 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: ((context, state) {
           if (state is BottomNavBarSuccess) {
             return BottomNavigationBar(
-              backgroundColor: const Color.fromARGB(255, 238, 194, 62),
-              selectedIconTheme: const IconThemeData(color: Colors.amber),
+              backgroundColor: const Color(0xFF3EEE79),
+              selectedIconTheme:
+                  const IconThemeData(color: Color.fromARGB(255, 44, 155, 81)),
               elevation: 3,
               currentIndex: state.currentIndex,
-              selectedItemColor: Colors.blue,
+              selectedItemColor: const Color.fromARGB(255, 16, 77, 36),
               unselectedItemColor: Colors.grey,
               unselectedLabelStyle: const TextStyle(color: Colors.grey),
               items: const [
@@ -80,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 BottomNavigationBarItem(
                     icon: Icon(Icons.build), label: "Demo 3"),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.person), label: "Demo 4"),
+                    icon: Icon(Icons.shopping_basket), label: "Shop"),
               ],
               onTap: (index) {
                 BlocProvider.of<BottomNavBarBloc>(context)
@@ -101,8 +109,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 title: [
                   ("Bloc Demo"),
                   ("Form Demo"),
-                  ("Demo 3"),
-                  ("Demo 4"),
+                  ("Animation"),
+                  ("Plants"),
                 ][state.currentIndex],
                 ontapleading: () {
                   BlocProvider.of<BottomNavBarBloc>(context)

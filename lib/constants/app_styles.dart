@@ -9,6 +9,7 @@ class CommonAppBar extends AppBar {
     onTapLeading? ontapleading,
     Color? appBarColor,
   }) : super(
+            elevation: 0,
             leading: IconButton(
                 onPressed: ontapleading,
                 icon: leading ??
